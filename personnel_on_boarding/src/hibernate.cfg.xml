@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/DB_PersonalOnBoarding</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">admin</property>
+		
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		
+		<property name="show_sql">true</property>
+		
+		<property name="hbm2ddl.auto">update</property>
+		
+		<property name="hibernate.c3p0.min_size">10</property>
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.acquire_increment">1</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.max_statements">50</property>
+		<property name="hibernate.c3p0.timeout">1800</property>
+
+		<!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- entities mapping -->
+		<mapping class="com.pravin.model.Country"/>
+		<mapping class="com.pravin.model.State"/>
+		<mapping class="com.pravin.model.City"/>
+		
+		<mapping class="com.pravin.model.Designation"/>
+		<mapping class="com.pravin.model.EducationalQualDetails"/>
+		<mapping class="com.pravin.model.Employee"/>
+		<mapping class="com.pravin.model.ExperienceDetails"/>
+		<mapping class="com.pravin.model.Industry"/>
+		<mapping class="com.pravin.model.IndustrySector"/>
+		<mapping class="com.pravin.model.BankDetails"/>
+		
+	</session-factory>
+</hibernate-configuration>        
