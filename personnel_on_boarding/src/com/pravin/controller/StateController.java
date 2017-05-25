@@ -162,6 +162,7 @@ public class StateController extends HttpServlet {
 	
 	private String getAll(){
 		
+		try{
 		List<State> states = stateService.getAll();
 		
 		if(states.isEmpty()){
@@ -180,6 +181,10 @@ public class StateController extends HttpServlet {
 			allRec.append("]");
 			System.out.println(allRec.toString());
 			return allRec.toString();
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			return "Error";
 		}
 	
 		

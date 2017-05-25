@@ -25,15 +25,14 @@ window.onload = function(){
 }
 
 function getAll(){
-	var data = "";
+	
 	getAjaxRequest();
 	xmlHttpRequest.onreadystatechange = function(){
 		if(xmlHttpRequest.readyState==4 && xmlHttpRequest.status==200){
-			if(data==="Error")
+			try{
+				fillTable(xmlHttpRequest.responseText);
+			}catch(e){
 				document.getElementById("table-space-country").innerHTML = "<h3 style='text-align: center;'>No Record(s) available!</h3>";
-			else{
-				data = xmlHttpRequest.responseText;
-				fillTable(data);
 			}
 		}
 	}

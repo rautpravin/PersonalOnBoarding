@@ -91,7 +91,7 @@ public class StateDaoImpl implements StateDao{
 		session.beginTransaction();
 		states = session.createQuery("from State", State.class).getResultList();
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}finally{
 			session.close();
 		}
@@ -106,7 +106,7 @@ public class StateDaoImpl implements StateDao{
 			session.beginTransaction();
 			state = session.get(State.class, id);
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}finally{
 			session.close();
 		}
@@ -117,10 +117,15 @@ public class StateDaoImpl implements StateDao{
 	public List<State> getByCountryId(int id) {
 		List<State> states = new ArrayList<>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		Query<State> q = session.createQuery("from State s where s.country.countryId = :countryId", State.class).setParameter("countryId", id);
-		states = q.getResultList();
-		session.close();
+		try{
+			session.beginTransaction();
+			Query<State> q = session.createQuery("from State s where s.country.countryId = :countryId", State.class).setParameter("countryId", id);
+			states = q.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
 		return states;
 	}
 	

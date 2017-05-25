@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="tab_city")
@@ -28,11 +32,12 @@ public class City {
 	@Column(name="city_name", length=50, nullable=false)
 	private String cityName;
 	
-	@ManyToOne
+	//@NotFound(action=NotFoundAction.IGNORE)
+	@ManyToOne(optional=false)
 	@JoinColumn(name="state_id")
 	private State state;
 
-	@OneToMany(mappedBy="city", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="city")
 	private List<Employee> employees = new ArrayList<>();
 	
 	

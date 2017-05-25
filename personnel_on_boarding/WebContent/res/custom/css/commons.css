@@ -1,6 +1,7 @@
 
 body{
-	padding-top: 70px;	
+	padding: 0px;
+	margin: 0px;
 }
 
 .master-header-container{
@@ -15,3 +16,4 @@ body{
 	//this is a marker class
 	border-color: gray;
 }
+

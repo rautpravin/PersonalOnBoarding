@@ -16,6 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name="tab_state")
 public class State {
@@ -28,11 +31,12 @@ public class State {
 	@Column(name="state_name", length=50, nullable=false)
 	private String stateName;
 
+	@NotFound(action=NotFoundAction.IGNORE)
 	@ManyToOne
 	@JoinColumn(name="country_id")
 	private Country country;
 	
-	@OneToMany(mappedBy="state", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="state", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private Set<City> cities = new HashSet<>();
 	
 	

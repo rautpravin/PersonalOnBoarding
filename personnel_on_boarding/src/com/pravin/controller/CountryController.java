@@ -160,11 +160,11 @@ public class CountryController extends HttpServlet {
 			return "Error";
 	}
 	
-	private StringBuffer getAll(HttpServletRequest request){
+	private String getAll(HttpServletRequest request){
 		List<Country> list = countryService.getAll();
-		StringBuffer allRec = new StringBuffer();
 		
 		if(!list.isEmpty()){
+			StringBuffer allRec = new StringBuffer();
 			allRec.append("[");
 			int n = 0;
 			for(Country c: list){
@@ -174,11 +174,12 @@ public class CountryController extends HttpServlet {
 					allRec.append(",");
 			}
 			allRec.append("]");
+			
+			return allRec.toString();
 		}else{
-			allRec.append("Error");
+			return "Error";
 		}
 		
-		return allRec;
 	}
 	
 }

@@ -26,7 +26,7 @@ public class Country {
 	@Column(name="country_name", length=50, unique=true)
 	private String countryName;
 	
-	@OneToMany(mappedBy="country", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="country", cascade=CascadeType.ALL)
 	private Set<State> states = new HashSet<>();
 	
 	

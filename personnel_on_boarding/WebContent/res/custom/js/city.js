@@ -121,9 +121,10 @@ function loadStatesByCountry(country){
 			var data = xmlHttpRequest.responseText;
 			
 			if(data==="Error"){
-				alert("no state(s) found!");
+				//alert("no state(s) found!");
 			}else{
 				var selStates = document.getElementById("states");
+				selStates.options.length = 0;
 				var jsonData = JSON.parse(data);
 				var empty = document.createElement("option");
 				empty.value = "";
@@ -147,7 +148,7 @@ function save(){
 			var data = xmlHttpRequest.responseText;
 			
 			if(data==="Error"){
-				alert("unable to save state record!");
+				alert("unable to save city record!");
 			}else{
 				loadAllCities();
 			}
@@ -246,6 +247,12 @@ function del(btn){
 //modal-state-form
 function showForm(str){
 	loadCountries();
+	
+	$('#modalcityform').modal({
+	    backdrop: 'static',
+	    keyboard: false
+	});
+	
 	$(document).ready(function(){
 		$("#modalcityform").modal('show');
 	});
@@ -265,17 +272,15 @@ function showForm(str){
 }
 
 function closeForm(){
-	$('#modalcityform').modal({
-	    backdrop: 'static',
-	    keyboard: false
-	});
+	
+	document.getElementById("default-country-val").innerHTML = "";
+	document.getElementById("default-state-val").innerHTML = "";
+	document.getElementById("form-city").reset();
 	
 	$(document).ready(function(){
 		$("#modalcityform").modal('hide');
 	});
-	document.getElementById("default-country-val").innerHTML = "";
-	document.getElementById("default-state-val").innerHTML = "";
-	document.getElementById("form-city").reset();
+	
 }
 
 
