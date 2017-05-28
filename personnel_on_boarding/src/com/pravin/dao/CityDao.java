@@ -14,6 +14,6 @@ public interface CityDao {
 	public List<City> getAll();
 	public City getById(long id);
 	
-	public List<City> getByStateId(long id);
+	public List<City> getByStateId(int id);
 	
 }

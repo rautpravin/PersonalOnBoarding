@@ -19,25 +19,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public String add(Employee employee) {
 		if(employeeDao.add(employee))
-			return "Employee record added successfully";
+			return "Success";
 		else
-			return "Unable to add Employee record";
+			return "Error";
 	}
 
 	@Override
 	public String update(Employee employee) {
 		if(employeeDao.update(employee))
-			return "Employee record updated successfully";
+			return "Success";
 		else
-			return "Unable to update Employee record";
+			return "Error";
 	}
 
 	@Override
 	public String delete(Employee employee) {
 		if(employeeDao.delete(employee))
-			return "Employee record deleted successfully";
+			return "Success";
 		else
-			return "Unable to delete Employee record";
+			return "Error";
 	}
 
 	@Override
@@ -47,9 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public List<Employee> getAll() {
-		List<Employee> employees = employeeDao.getAll();
-		
-		return employees;
+		return employeeDao.getAll();
 	}
 
 	@Override
@@ -57,6 +55,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		long count = employeeDao.getCount();
 		String eid = "SC"+(count+1);
 		return eid;
+	}
+
+	@Override
+	public List<Employee> getManagers() {
+		return employeeDao.getManagers();
 	}
 
 }

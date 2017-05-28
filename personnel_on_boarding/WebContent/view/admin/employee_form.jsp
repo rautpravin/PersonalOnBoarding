@@ -13,11 +13,11 @@
 
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
-	<link href="/personnel_on_boarding/res/css/form.css" rel="stylesheet">
+	<link href="/personnel_on_boarding/res/custom/css/form.css" rel="stylesheet">
 	
 	
-	<script src="/personnel_on_boarding/res/custom/js/emp_form.js"></script>
-	<script src="/personnel_on_boarding/res/custom/js/empform_ajax.js"></script>
+	<script src="/personnel_on_boarding/res/custom/js/employee.js"></script>
+	
 	  
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,521 +27,484 @@
     <![endif]-->
   </head>
 <body>
+	<jsp:include page="/view/admin/navbar.jsp" flush="true"/>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-2 col-md-3 col-lg-3"></div>
 			
-			<form id="emp-form" onsubmit="return false;">
-			<div class="col-sm-10 col-md-7 col-lg-6">
+			<div class="col-sm-10 col-md-7 col-lg-6" id="forms-container">
+				
 				<!-- Personal Details -->
-				<div class="form-container" id="divPersonalDetails" style="display: block;" >
-					<h3 class="form-title"> Personal Details</h3>
+				<form id="div-personal-details" onsubmit="return false;" >
+					<hr>
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;"> Personal Details</h3>
+					
 					<div class="form-group">
 						<label>Employee Name</label>
 						<div class="row">
 							<div class="col-sm-4">
-								<label>First Name</label>
-								<input type="text" class="form-control" name="firstName" id="firstName" placeholder="firstName" />
+								<label>First Name *</label>
+								<input type="text" class="form-control manditory" name="first-name" id="first-name" placeholder="First Name" />
 							</div>	
 							<div class="col-sm-4">
-								<label>Middle Name</label>
-								<input type="text" class="form-control" name="middleName" id="middleName" placeholder="middleName" />
+								<label>Middle Name *</label>
+								<input type="text" class="form-control manditory" name="middle-name" id="middle-name" placeholder="Middle Name" />
 							</div>	
 							<div class="col-sm-4">
-								<label>Last Name</label>
-								<input type="text" class="form-control" name="lastName" id="lastName" placeholder="lastName" />
+								<label>Last Name *</label>
+								<input type="text" class="form-control manditory" name="last-name" id="last-name" placeholder="Last Name" />
 							</div>	
 						</div>	
 					</div>
 												
 					<div class="form-group">
-						<label>Birth Date</label>
-						<input type="date" name="birthDate" id="birthDate" class="form-control" />
+						<label>Birth Date *</label>
+						<input type="text" class="form-control manditory" name="birth-date" id="birth-date" />
 					</div>
 						
 					<div class="form-group">
-						<label>Gender</label>
-						<select name="gender" id="gender" class="form-control" >
-							<option value="male">male</option>
-							<option value="female">female</option>
+						<label>Gender *</label>
+						<select name="gender" class="form-control manditory" id="gender" >
+							<option></option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
 						</select>	
 					</div>
 					
 					<div class="form-group">
-						<label>Marital Status</label>
-						<select class="form-control" name="maritalStatus" id="maritalStatus" >
+						<label>Marital Status *</label>
+						<select class="form-control manditory" name="marital-status" id="marital-status" >
+						<option></option>
 						<option value="unmarried">unmarried</option>
 						<option value="married">married</option>
 						</select>
 					</div>
-						
+							
 					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" id="btnPersonalDetails" onclick="showForm('divContactInformation')" >Next-></button>
+						<button class="btn btn-primary" id="btn-personal-details" onclick="next('div-personal-details', 'div-contact-details')" >Next-></button>
 					</div>
-				</div> <!-- Personal Details -->
-				
-				<!-- Contact Information -->
-				<div class="form-container" id="divContactInformation" style="display: none;">
-					<h3 class="form-title">Contact Information</h3>	
-					<div class="form-group">
-						<label>Email Id </label>
-						<input type="text" class="form-control" name="emailId" id="emailId" placeholder="email-id"  />	
-					</div>
+					<hr>
+				</form> <!-- Personal Details -->
 			
+				<!-- Contact Details -->
+				<form id="div-contact-details" onsubmit="return false;">
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Contact Details</h3>
 					<div class="form-group">
-						<label>Mobile No</label>
+						<label>Email Id *</label>
+						<input type="text" class="form-control manditory" name="email-id" id="email-id"/>
+					</div>	
+					
+					<div class="form-group">
+						<label>Mobile No *</label>
 						<span class="input-group">
 						<span class="input-group-addon" style="padding: 0px;">
-						<select name="mobExtNo" name="mobileExtNo" id="mobileExtNo">
+						<select class="form-control manditory " name="mobile-ext-no" id="mobile-ext-no" style="width: 100px;">
+						<option></option>
 						<option value="+91">+91</option>
 						</select>
 						</span>
-						<input type="text" class="form-control" name="mobileNo" id="moblieNo" placeholder="mobileNo" maxlength="10" />
+						<input type="text" class="form-control manditory " name="mobile-no" id="mobile-no" placeholder="Mobile No" maxlength="10" />
 						</span>
 					</div>
 					
 					<div class="form-group">
 						<label>Landline No</label>
-						<input type="text" class="form-control" name="landlineNo" id="landlineNo" placeholder="landlineNo" />
+						<input type="text" class="form-control" name="landline-no" id="landline-no" placeholder="landline-no" />
 					</div>
-				
-					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" onclick="showForm('divPersonalDetails')" id="btnContInfoBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divEmergencyContactDetails')" id="btnContInfoNext">Next</button>
-					</div>					
-				</div><!-- Contact Information -->
-				
-				
-				<!-- Emergency Contact Details -->
-				<div class="form-container" id="divEmergencyContactDetails" style="display: none;">
-					<h3 class="form-title">Emergency Contact Details</h3>
-					
+					<hr>
 					<div class="form-group">
-						<label>Person Name</label>
-						<input type="text" class="form-control" name="emergencyContactPersonName" id="emergencyContactPersonName" placeholder="contactPersonName"  />
+						<label>Emergency Cont. Person Name *</label>
+						<input type="text" class="form-control manditory" name="emergency-contact-person-name" id="emergency-contact-person-name" placeholder="Emergency Cont. Person"  />
 					</div>
 					
 					<div class="form-group">
-						<label>Contact No</label>
-						<input type="text" class="form-control" name="emergencyContactNo" id="emergencyContactNo" placeholder="contactPersonName"  />
+						<label>Emergency Cont. No *</label>
+						<input type="text" class="form-control manditory" name="emergency-contact-no" id="emergency-contact-no" placeholder="Emergency Cont. No."  />
 					</div>
 					
 					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" onclick="showForm('divContactInformation')" id="btnEmergencyContBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divAddressDetails')" id="btnEmergencyContNext">Next</button>
+						<button class="btn btn-primary" onclick="previous('div-contact-details','div-personal-details')" id="btn-emergency-cont-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-contact-details','div-address-details')" id="btn-emergency-cont-next">Next</button>
 					</div>
-				</div><!-- Emergency Contact Details -->
-				
+					<hr>
+				</form><!-- Contact Details -->
 				
 				<!-- Address Details -->
-				<div class="form-container" id="divAddressDetails" style="display: none;">
-					<h3 class="form-title">Address Details</h3>
+				<form id="div-address-details" onsubmit="return false;">
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Address Details</h3>
 					<div class="form-group">
-					<label>Flat/Building No</label>
-					<input type="text" class="form-control" name="flatBuildingNo" id="flatBuildingNo" placeholder="buliding/flat no"  />
+					<label>Flat/Building No *</label>
+					<input type="text" class="form-control manditory" name="flat-building-no" id="flat-building-no" placeholder="Buliding/Flat no"  />
 					</div>
 					
 					<div class="form-group">
 					<label>Street Lane 1</label>
-					<input type="text" class="form-control" name="streetLane1" id="streetLane1" placeholder="street lane 1"/>
+					<input type="text" class="form-control" name="street-lane1" id="street-lane1" placeholder="Street Lane 1"/>
 					</div>
 					
 					<div class="form-group">
-					<label>Street Lane 2</label>
-					<input type="text" class="form-control" name="streetLane2" id="streetLane2" placeholder="street lane 2"  />
+					<label>Street Lane 2 *</label>
+					<input type="text" class="form-control manditory" name="street-lane2" id="street-lane2" placeholder="Street Lane 2"  />
 					</div>
 					
 					<div class="form-group">
-					<label>Landmark</label>
-					<input type="text" class="form-control" name="landmark" id="landmark" placeholder="landmark" />
+					<label>Landmark *</label>
+					<input type="text" class="form-control manditory" name="landmark" id="landmark" placeholder="Landmark" />
 					</div>
 					
 					<div class="form-group">
-					<label>Location</label>
-					<input type="text" class="form-control" name="location" id="location" placeholder="location" />
+					<label>Location *</label>
+					<input type="text" class="form-control manditory" name="location" id="location" placeholder="Location" />
 					</div>
 					
 					<div class="form-group">
-					<label>Country</label>
-					<select name="country" id="country" class="form-control" onchange="loadStates(this)">
-					<option></option>
-					<option value="india">India</option>
-					</select>
-					</div>
-					
-					<div class="form-group">
-					<label>State</label>
-					<select name="state" id="state" class="form-control" onchange="loadCities(this)">
+					<label>Country *</label>
+					<select name="country" id="countries" class="form-control manditory" onchange="loadStates(this)">
 					<option></option>
 					</select>
 					</div>
 					
 					<div class="form-group">
-					<label>City</label>
-					<select name="city" id="city" class="form-control" >
+					<label>State *</label>
+					<select name="state" id="states" class="form-control manditory" onchange="loadCities(this)">
 					<option></option>
 					</select>
 					</div>
 					
 					<div class="form-group">
-					<label>Pincode</label>
-					<input type="text" class="form-control" name="pincode" id="pincode" placeholder="pincode" />
+					<label>City *</label>
+					<select name="city" id="cities" class="form-control manditory" >
+					<option></option>
+					</select>
+					</div>
+					
+					<div class="form-group">
+					<label>Pincode *</label>
+					<input type="text" class="form-control manditory" name="pincode" id="pincode" placeholder="Pincode" />
 					</div>
 				
 					<div class="form-group">
-						<label>Address Proof</label>
-						<select class="form-control" onchange="addrProofType()" name="addressProof" id="addressProof" >
-						<option value="driving license">Driving License</option>
-						<option value="voter id">Voter Id</option> 
-						<option value="adhaar">Aadhaar</option> 
-						<option value="passport">Passport</option>
-						<option value="others">Others</option>
+						<label>Address Proof *</label>
+						<select class="form-control manditory" onchange="checkAddrProofType(this)" name="address-proof" id="address-proof" >
+						<option value="Driving License">Driving License</option>
+						<option value="Voter Id">Voter Id</option> 
+						<option value="Aadhaar">Aadhaar</option> 
+						<option value="Passport">Passport</option>
+						<option value="Others">Others</option>
 						</select>
 					</div>
-				
-					<div class="form-group" id="otherAddrProofDetails" style="display: none;">
-						<label>Address Proof Details</label>
-						<input type="text" class="form-control" name="otherAddressProofVal" /> 
+					<script>
+					function checkAddrProofType(sel){
+						if(sel.value==="Others"){
+							document.getElementById("other-addrProof-details").style.display = "block";
+						}else{
+							document.getElementById("other-addrProof-details").style.display = "none";
+						}	
+					}
+					</script>
+					
+					<div class="form-group" id="other-addrProof-details" style="display: none;">
+						<label>Address Proof Details *</label>
+						<input type="text" class="form-control" name="other-address-proof-name" id="other-address-proof-name" /> 
 					</div>
 					
 					<div class="form-group">
-						<label>Proof Id No</label>
-						<input type="text" class="form-control" name="proofIdNo" /> 
+						<label>Proof Id No *</label>
+						<input type="text" class="form-control manditory" name="proof-id-no" id="proof-id-no" /> 
 					</div>
 					
-					<div class="form-group" style="text-align:right;"> 
-						<button class="btn btn-primary" onclick="showForm('divEmergencyContactDetails')" id="btnAddrDetailsBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divBankDetails')" id="btnAddrDetailsNext">Next</button>
+					<div class="form-group" style="text-align:right;">
+						<button class="btn btn-primary" onclick="previous('div-address-details', 'div-contact-details')" id="btn-addr-details=-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-address-details', 'div-bank-details')" id="btn-addr-details-next">Next</button>
 					</div>
-				</div><!-- Address Details -->
+					<hr>
+				</form><!-- Address Details -->
 				
 				
 				<!-- Bank Details -->
-				<div class="form-container" id="divBankDetails" style="display: none;">
-					<h3 class="form-title">Bank Details</h3>	
+				<form id="div-bank-details" onsubmit="return false">
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Bank Details</h3>
 					<div class="form-group">
-						<label>Account Number </label>
-						<input type="text" class="form-control" name="accountNumber" id="accountNumber" placeholder="Account Number"  />	
+						<label>Account Number *</label>
+						<input type="text" class="form-control manditory" name="account-number" id="account-number" placeholder="Account Number"  />	
 					</div>
 					
 					<div class="form-group">
-						<label>Account Holder’s Name​</label>
-						<input type="text" class="form-control" name="accountHoldersName" id="accountHoldersName" placeholder="Account Holder’s Name​"  />	
+						<label>Account Holder’s Name​ *</label>
+						<input type="text" class="form-control manditory" name="account-holders-name" id="account-holders-name" placeholder="Account Holder’s Name​"  />	
 					</div>
 					
 					<div class="form-group">
-						<label>Branch Name​</label>
-						<input type="text" class="form-control" name="branchName" id="branchName" placeholder="Branch Name​"  />	
+						<label>Branch Name​ *</label>
+						<input type="text" class="form-control manditory" name="branch-name" id="branch-name" placeholder="Branch Name​"  />	
 					</div>
 					
 					<div class="form-group">
-						<label>A/C Type​</label>
-						<select class="form-control" name="acType" id="acType"  >
-						<option value="current">Current</option>
-						<option value="savings">Savings</option>
+						<label>A/C Type *​</label>
+						<select class="form-control manditory" name="account-type" id="account-type"  >
+						<option value="Current">Current</option>
+						<option value="Savings">Savings</option>
 						</select>	
 					</div>
 					
 					<div class="form-group">
-						<label>IFSC Code​</label>
-						<input type="text" class="form-control" name="ifscCode" id="ifscCode" placeholder="IFSC Code​"  />	
+						<label>IFSC Code *​</label>
+						<input type="text" class="form-control manditory" name="ifsc-code" id="ifsc-code" placeholder="IFSC Code​"  />	
 					</div>
 					
 					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" onclick="showForm('divAddressDetails')" id="btnBankDetailsBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divEduQualDetails')" id="btnBankDetailsNext">Next</button>
+						<button class="btn btn-primary" onclick="previous('div-bank-details', 'div-address-details')" id="btn-bank-details-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-bank-details', 'div-edu-qual-details')" id="btn-bank-details-next">Next</button>
 					</div>
-				
-				</div><!-- Bank Details -->
-				
-				
+					<hr>
+				</form><!-- Bank Details -->
 				
 				<!-- Education Qual Details -->
-				<div class="form-container" id="divEduQualDetails" style="display: none;">
-					<h3 class="form-title">Educational Qualification Details</h3>	
+				<form id="div-edu-qual-details" onsubmit="return false;">	
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Educational Qualification Details</h3>
+					
 					<div class="table-responsive">
 					<table class="table table-striped">
 					 
 					<tr>
-						<th>Course</th>
-						<th>School/University</th>
-						<th>Passing Yr</th>
-						<th>Percent</th>
+						<th >Course</th>
+						<th >School/University</th>
+						<th >Passing Yr</th>
+						<th >Percent</th>
 					</tr>
 					
 					<tr><td colspan="4">10th or Equivalent</td></tr>
 					<tr>
-					<td><input type="text" name="course1" class="form-control"/></td>
-					<td><input type="text" name="schoolUniversity1" class="form-control"/></td>
-					<td><input type="date" name="passingYear1" class="form-control"/></td>
-					<td><input type="text" name="percent1" class="form-control"/></td>
+					<td><input type="text" name="course1" id="course1" class="form-control"/></td>
+					<td><input type="text" name="school-university1" id="school-university1" class="form-control"/></td>
+					<td><input type="text" name="passing-year1" id="passing-year1" class="form-control"/></td>
+					<td><input type="text" name="percent1" id="percent1" class="form-control"/></td>
 					</tr>
 					 
 					<tr><td colspan="4">12th or Equivalent</td></tr>
 					<tr>
-					<td><input type="text" name="course2" class="form-control"/></td>
-					<td><input type="text" name="schoolUniversity2" class="form-control"/></td>
-					<td><input type="date" id="datepicker" name="passingYear2" class="form-control"/></td>
-					<td><input type="text" name="percent2" class="form-control"/></td>
+					<td><input type="text" name="course2" id="course2" class="form-control"/></td>
+					<td><input type="text" name="school-university2" id="school-university2" class="form-control"/></td>
+					<td><input type="text" name="passing-year2" id="passing-year2" class="form-control"/></td>
+					<td><input type="text" name="percent2" id="percent2" class="form-control"/></td>
 					</tr>
 					
 					<tr><td colspan="4">Graduation or Equivalent</td></tr>
 					<tr>
-					<td><input type="text" name="course3" class="form-control"/></td>
-					<td><input type="text" name="schoolUniversity3" class="form-control"/></td>
-					<td><input type="date" name="passingYear3" class="form-control"/></td>
-					<td><input type="text" name="percent3" class="form-control"/></td>
+					<td><input type="text" name="course3" id="course3" class="form-control"/></td>
+					<td><input type="text" name="school-university3" id="school-university3" class="form-control"/></td>
+					<td><input type="text" name="passing-year3" id="passing-year3" class="form-control"/></td>
+					<td><input type="text" name="percent3" id="percent3" class="form-control"/></td>
 					</tr>
 					
 					<tr><td colspan="4">PG or Equivalent</td></tr>
 					<tr>
-					<td><input type="text" name="course4" class="form-control"/></td>
-					<td><input type="text" name="schoolUniversity4" class="form-control"/></td>
-					<td><input type="date" name="passingYear4" class="form-control"/></td>
-					<td><input type="text" name="percent4" class="form-control"/></td>
+					<td><input type="text" name="course4" id="course4" class="form-control"/></td>
+					<td><input type="text" name="school-university4" id="school-university4" class="form-control"/></td>
+					<td><input type="text" name="passing-year4" id="passing-year4" class="form-control"/></td>
+					<td><input type="text" name="percent4" id="percent4" class="form-control"/></td>
 					</tr>
 					
 					</table>
 					</div>
 					<div class="form-group" style="text-align: right;"> 
-						<button class="btn btn-primary" onclick="showForm('divBankDetails')" id="btnEduQualDetailsBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divExperienceDetails')" id="btnEduQualDetailsNext">Next</button>
+						<button class="btn btn-primary" onclick="previous('div-edu-qual-details', 'div-bank-details')" id="btn-edu-qual-details-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-edu-qual-details', 'div-experience-details')" id="btn-eduQual-details-next">Next</button>
 					</div>
 				
-				</div><!-- Education Qual Details -->
+				</form><!-- Education Qual Details -->
 				
 				
+				<!-- Experience Type Details -->
+				<form id="div-experience-details" onsubmit="return false;">
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Experience Details</h3>	
+					<div class="form-group">
+					<label>Experience Type *</label>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6">
+							<input type="radio" onclick="document.getElementById('div-for-experienced').style.display = 'none';" checked="checked" name="experiencetype" id="fresher" value="fresher" />&nbsp;Fresher
+						</div>
+						<div class="col-sm-6">
+							<input type="radio" onclick="document.getElementById('div-for-experienced').style.display = 'block';" name="experiencetype" id="experienced" value="experienced" />&nbsp;Experienced
+						</div>
+					</div>
+					<div class="form-group" style="text-align: right;">	
+						<button class="btn btn-primary" onclick="previous('div-experience-details', 'div-edu-qual-details')" id="btn-exp-details-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-experience-details', 'div-employment-details')" id="btn-exp-details-next">Next</button>
+					</div>
+				</form><!-- Experience Type Details -->
 				
 				<!-- Experience Details -->
-				<div class="form-container" id="divExperienceDetails" style="display: none;">
-					<h3 class="form-title">Experience Details</h3>	
-					
+				<form id="div-for-experienced" onsubmit="return false;" style="display: none;">
+					<hr>
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Employer Details</h3>
+					<h5 id="exp-added" style="text-align: right;">Total previous exp added : 0</h5>		
 					<div class="form-group">
-						<div class="col-sm-6">
-							<input type="radio" checked="checked" name="experienceType" id="r1" value="fresher"  onclick="isExperienced()"/>&nbsp;Fresher
-						</div>
-						<div class="col-sm-6">
-							<input type="radio" onselect="loadIndustries()" name="experienceType" id="r2" value="experienced"  onclick="isExperienced()"/>&nbsp;Experienced
-						</div>
-					</div>
-					<br>
-					<div id="subDivforExperienced" style="display: none;">
-						<div class="form-container" style="display: block;">
-							<h3 class="form-title">First Employer Details</h3>
+						<label>Employer Name</label>
+						<input type="text" name="employer-name" id="employer-name" class="form-control" /> 
+					</div>	
 							
-							<div class="form-group">
-							<label>Employer Name</label>
-							<input type="text" name="employerName1" id="employerName1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Designation</label>
-							<input type="text" name="designation1" id="designation1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Duration From</label>
-							<input type="date" name="durationFrom1" id="durationFrom1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Duration Till</label>
-							<input type="text" name="durationTill1" id="durationTill1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Industry</label>
-							<select name="industry1" id="industry1" class="form-control">
-							<option></option> 
-							</select>
-							</div>	
-							
-							<div class="form-group">
-							<label>Total Experience</label>
-							<input type="text" name="totalExperience1" id="totalExperience1" class="form-control" readonly="readonly"/> 
-							</div>	
-							
-							<div class="form-group">
-							<label>CTC Fixed</label>
-							<input type="text" name="ctcFixed1" id="ctcFixed1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>CTC Variable</label>
-							<input type="text" name="ctcVariable1" id="ctcVariable1" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>1st Reference Name</label>
-							<input type="text" name="refName101" id="refName101" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>1st Reference Contact</label>
-							<input type="text" name="refContact101" id="refContact101" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>2st Reference Name</label>
-							<input type="text" name="refName102" id="refName102" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>2st Reference Contact</label>
-							<input type="text" name="refContact102" id="refContact102" class="form-control" /> 
-							</div>	
-						
-						</div>
-					
-						<div class="form-container"  style="display: block;">
-							<h3 class="form-title">Second Employer Details</h3>
-							
-							<div class="form-group">
-							<label>Employer Name</label>
-							<input type="text" name="employerName2" id="employerName2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Designation</label>
-							<input type="text" name="designation2" id="designation2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Duration From</label>
-							<input type="date" name="durationFrom2" id="durationFrom2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Duration Till</label>
-							<input type="text" name="durationTill2" id="durationTill2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>Industry</label>
-							<select name="industry2" id="industry2" class="form-control">
-							<option></option> 
-							</select>
-							</div>	
-							
-							<div class="form-group">
-							<label>Total Experience</label>
-							<input type="text" name="totalExperience2" id="totalExperience2" class="form-control" readonly="readonly"/> 
-							</div>	
-							
-							<div class="form-group">
-							<label>CTC Fixed</label>
-							<input type="text" name="ctcFixed2" id="ctcFixed2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>CTC Variable</label>
-							<input type="text" name="ctcVariable2" id="ctcVariable2" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>1st Reference Name</label>
-							<input type="text" name="refName201" id="refName201" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>1st Reference Contact</label>
-							<input type="text" name="refContact201" id="refContact201" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>2st Reference Name</label>
-							<input type="text" name="refName202" id="refName202" class="form-control" /> 
-							</div>	
-							
-							<div class="form-group">
-							<label>2st Reference Contact</label>
-							<input type="text" name="refContact202" id="refContact202" class="form-control" /> 
-							</div>				
-						</div>
-					
-						<div class="form-container" style="display: block;">
-							<h3 class="form-title">Previous Employment and experience</h3>
-							<div class="form-group">
-							<label>Total Years Of Experience</label>
-							<input type="text" name="preTotExp" id="preTotExp"  class="form-control" />
-							</div>
-						</div>
-					
-						<div class="form-container" style="display: block;">
-							<h3 class="form-title">Grand Total work experience</h3>
-							<input type="text" id="grandTotWorkExp" name="grandTotWorkExp" readonly="readonly" class="form-control" /> 
-						</div>
-					</div>
-					
-					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" onclick="showForm('divEduQualDetails')" id="btnExpDetailsBack">Back</button>
-						<button class="btn btn-primary" onclick="showForm('divEmploymentDetails')" id="btnExpDetailsNext">Next</button>
-					</div>
-				</div><!-- Experience Details -->
-				
-						
-						
-				<!-- Employment Details -->
-				<div class="form-container" id="divEmploymentDetails" style="display: none;">
-					<h3 class="form-title">Employment details</h3>
-					<div class="form-group">
-						<label>Joining Date</label>
-						<input type="date" class="form-control" name="joiningDate"/>
-					</div>
-					
-					<div class="form-group">
-						<label>Leaving Date</label>
-						<input type="date" class="form-control" name="leavingDate"/>
-					</div>
-					
 					<div class="form-group">
 						<label>Designation</label>
-						<select class="form-control" name="designation">
+						<input type="text" name="designation" id="designation" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>Duration From</label>
+						<input type="text" onblur="calculateDuration()" name="duration-from" id="duration-from" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>Duration Till</label>
+						<input type="text"  onblur="calculateDuration()" name="duration-till" id="duration-till" class="form-control" /> 
+					</div>	
 						
+					<div class="form-group">
+						<label>Industry</label>
+						<select name="industries" id="industries" onchange="loadIndustrySectors(this)" class="form-control">
+						<option>test</option>
+						</select>
+					</div>	
+				
+					<div class="form-group">
+						<label>Assigned Sector *</label>
+						<select name="sectors" id="sectors" class="form-control manditory"> </select>
+					</div>
+					
+					<script>	
+					function calculateDuration(){
+					var date1 = new Date(""+document.getElementById("duration-from").value);
+					var date2 = new Date(""+document.getElementById("duration-till").value);
+				
+						if(date1!=="" && date2!==""){
+							var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+							var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+							document.getElementById("total-experience").value = diffDays +" days";
+						}
+					}
+					</script>
+
+					<div class="form-group">
+						<label>Total Experience</label>
+						<input type="text" name="total-experience" id="total-experience" class="form-control" readonly="readonly" /> 
+					</div>	
+						
+					<div class="form-group">
+						<label>CTC Fixed</label>
+						<input type="text" name="ctc-fixed" id="ctc-fixed" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>CTC Variable</label>
+						<input type="text" name="ctc-variable" id="ctc-variable" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>1st Reference Name</label>
+						<input type="text" name="ref-name1" id="ref-name1" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>1st Reference Contact</label>
+						<input type="text" name="ref-contact1" id="ref-contact1" class="form-control" /> 
+					</div>	
+							
+					<div class="form-group">
+						<label>2st Reference Name</label>
+						<input type="text" name="ref-name2" id="ref-name2" class="form-control" /> 
+					</div>	
+						
+					<div class="form-group">
+						<label>2st Reference Contact</label>
+						<input type="text" name="ref-contact2" id="ref-contact2" class="form-control" /> 
+					</div>	
+					
+					<div class="form-group" style="text-align: right;">
+						<button onclick="saveExp()" class="btn btn-success">Save (AddMore(+))</button>
+					</div>
+				</form> <!-- for experience details -->	
+				
+				
+				
+				<!-- Employment Details -->
+				<form id="div-employment-details" onsubmit="return false;">
+					<h3 style="padding: 8px; margin-bottom: 20px; font-weight: bold; border-bottom: 1px solid black;">Employment Details</h3>
+					<div class="form-group">
+						<label>Joining Date *</label>
+						<input type="text" class="form-control manditory" name="joining-date" id="joining-date"/>
+					</div>
+					
+					<div class="form-group">
+						<label>Leaving Date *</label>
+						<input type="text" class="form-control manditory" name="leaving-date" id="leaving-date" />
+					</div>
+					
+					<div class="form-group">
+						<label>Designation *</label>
+						<select class="form-control manditory" name="designations" id="designations"> </select>
+					</div>
+					
+					<div class="form-group">
+						<label>Allocation City *</label>
+						<select name="allocation-city" id="allocation-city" class="form-control manditory"> </select>
+					</div>
+					
+					<div class="form-group">
+						<label>Assigned Industry *</label>
+						<select class="form-control manditory" onchange="loadIndustrySectors(this)" name="assigned-industry" id="assigned-industry"> </select>
+					</div>
+					
+					<div class="form-group">
+						<label>Assigned Sector *</label>
+						<select name="assigned-sector" id="assigned-sector" class="form-control manditory"> </select>
+					</div>
+					
+					<div class="form-group">
+						<label>He is Manager ?</label>
+						<select name="is-manager" id="is-manager" onchange="isManager(this)" class="form-control manditory"> 
+						<option></option><option value="Yes">Yes</option><option value="No">No</option>
 						</select>
 					</div>
-					
-					<div class="form-group">
-						<label>Allocation City</label>
-						<select name="allocationCity" class="form-control"></select>
-					</div>
-					
-					<div class="form-group">
-						<label>Assigned Industry</label>
-						<select class="form-control" name="assignedIndustry">
-						
+					<script>function isManager(opt){
+						if(opt.value==="No"){
+							document.getElementById('assign-manager').style.display='block';
+							document.getElementById('assign-manager').setAttribute("class","form-control manditory");
+						}
+						else {
+							document.getElementById('assign-manager').style.display='none';
+							document.getElementById('assign-manager').setAttribute("class","form-control");
+						}
+					}</script>
+					<div class="form-group" id="assign-manager" style="display: none;">
+						<label>Reporting Manager *</label>
+						<select name="reporting-manager" id="reporting-manager">
 						</select>
-					</div>
-					
-					<div class="form-group">
-						<label>Assigned Sector</label>
-						<select name="assignedSector" class="form-control"></select>
-					</div>
-					
-					<div class="form-group">
-						<label>Reporting Manager</label>
-						<input type="text" name="reportingManager" class="form-control" />
 					</div>
 					
 					<div class="form-group">
 						<label>CTC</label>
-						<input type="text" name="ctc" class="form-control" />
+						<input type="text" name="ctc" id="ctc" class="form-control manditory" />
 					</div>
 					
 					<div class="form-group" style="text-align: right;">
-						<button class="btn btn-primary" onclick="showForm('divExperienceDetails')" id="btnEmploymentDetailsBack">Back</button>
-						<button class="btn btn-primary" onclick="addRec()" id="btnEmploymentDetailsNext">Submit</button>
+						<button class="btn btn-primary" onclick="previous('div-employment-details', 'div-experience-details')" id="btn-employment-details-back">Back</button>
+						<button class="btn btn-primary" onclick="next('div-employment-details', 'div-submit-details')" id="btn-employment-details-next">Submit</button>
 					</div>
-				</div><!-- Employment Details -->
-						
-				<h4 id="errMsg" style="text-align: center; color: orange; font-style: italic; margin-top:-8px; background: black;"></h4>
-			</div><!-- end of parent col -->
-			</form>
+					<hr>
+				</form><!-- Employment Details -->
+
+				<div id="div-submit-details" style="display: none;">
+					<button class="btn btn-primary">Back</button>
+					<button class="btn btn-success" onclick="save()">Send</button>
+				</div>
+				
+			</div>
 			
-			
-			<div class="col-sm-2 col-md-2 col-lg-3"></div>
+			<div class="col-sm-2 col-md-3 col-lg-3"></div>
 		</div>
-	</div>
+	</div>				
+
 
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -551,20 +514,80 @@
     
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
+	
 	$( function() {
-		$( "#datepicker" ).datepicker();
+		
+		 $( "#birth-date" ).datepicker({
+	            changeMonth: true,
+	            changeYear: true,
+	            yearRange: '-70:+0'
+	        });
+		
+		$( "#passing-year1" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#passing-year2" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#passing-year3" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#passing-year4" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#joining-date" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#leaving-date" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+		
+		$( "#duration-from" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-70:+0'
+        });
+	
+		$( "#duration-till" ).datepicker({
+        	changeMonth: true,
+        	changeYear: true,
+        	yearRange: '-70:+0'
+    	});
+	
+		
 	} );
 	</script>
 	<script type="text/javascript">
 	function addrProofType(){
-		if(document.getElementById("addressProof").value==="others")
-			document.getElementById("otherAddrProofDetails").style.display="block";
-		else
-			document.getElementById("otherAddrProofDetails").style.display="none";
+		if(document.getElementById("address-proof").value==="Others"){
+			document.getElementById("other-address-proof-name").className="form-control manditory";
+			document.getElementById("other-addrProof-details").style.display="block";
+		}
+		else{
+			document.getElementById("other-address-proof-name").className="form-control";
+			document.getElementById("other-addrProof-details").style.display="none";
+		}
 	}
 	
 	function isExperienced(){
-		var radios = document.getElementsByName("experienceType");
+		var radios = document.getElementsByName("experience-type");
 		var val = "";
 		for (var i = 0, length = radios.length; i < length; i++) {
 		    if (radios[i].checked) {
@@ -574,9 +597,9 @@
 		}
 		 
 		if(val==="experienced"){
-	        	document.getElementById("subDivforExperienced").style.display="block";
+	        	document.getElementById("div-for-experienced").style.display="block";
 		}else{
-	        	document.getElementById("subDivforExperienced").style.display="none";
+	        	document.getElementById("div-for-experienced").style.display="none";
 		}
 	}
 	</script>

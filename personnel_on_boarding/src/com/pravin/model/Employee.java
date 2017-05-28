@@ -24,32 +24,32 @@ public class Employee {
 	@Column(name="employee_id")
 	private String employeeId;
 	
-	@Column(name="emp_name", length=60, nullable=false)
+	@Column(name="emp_name", length=60)
 	private String employeeName;
 	
 	@Column(name="birth_date")
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 	
-	@Column(name="email_id", length=60, nullable=false, unique=true)
+	@Column(name="email_id", length=60)
 	private String emailId;
 	
-	@Column(name="mobile_no", length=13, nullable=false, unique=true)
+	@Column(name="mobile_no", length=15)
 	private String mobileNo;
 	
 	@Column(name="landline_no", length=25)
 	private String landlineNo;
 	
-	@Column(name="emergency_cont_person_name", length=60, nullable=false)
+	@Column(name="emergency_cont_person_name", length=60)
 	private String emergencyContactPersonName;
 	
-	@Column(name="emergency_cont_no", length=25, nullable=false)
+	@Column(name="emergency_cont_no", length=25)
 	private String emergencyContactNo;
 	
-	@Column(name="gender", length=6, nullable=false)
+	@Column(name="gender", length=6)
 	private String gender;
 	
-	@Column(name="marital_status", length=10, nullable=false)
+	@Column(name="marital_status", length=10)
 	private String maritalStatus;
 	
 	@Column(name="addr_proof_doc_type", length=30)
@@ -100,16 +100,13 @@ public class Employee {
 	@Column(name="experience_type")
 	private String experienceType;
 	
-	@Column(name="pre_tot_yr_of_exp")
-	private double previousTotalYearsOfExp;
-	
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="desg_id")
 	private Designation designation;
 	
 		
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="sector_id")
 	private IndustrySector industrySector;
 	
@@ -368,14 +365,6 @@ public class Employee {
 
 	public void setExperienceType(String experienceType) {
 		this.experienceType = experienceType;
-	}
-
-	public double getPreviousTotalYearsOfExp() {
-		return previousTotalYearsOfExp;
-	}
-
-	public void setPreviousTotalYearsOfExp(double previousTotalYearsOfExp) {
-		this.previousTotalYearsOfExp = previousTotalYearsOfExp;
 	}
 
 	

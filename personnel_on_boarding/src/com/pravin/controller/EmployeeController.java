@@ -3,7 +3,12 @@ package com.pravin.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,23 +16,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
+import com.pravin.daoImpl.IndustrySectorDaoImpl;
 import com.pravin.model.BankDetails;
+import com.pravin.model.City;
+import com.pravin.model.Designation;
 import com.pravin.model.EducationalQualDetails;
 import com.pravin.model.Employee;
 import com.pravin.model.ExperienceDetails;
+import com.pravin.model.IndustrySector;
+import com.pravin.service.CityService;
+import com.pravin.service.DesignationService;
 import com.pravin.service.EmployeeService;
+import com.pravin.service.IndustrySectorService;
+import com.pravin.serviceImpl.CityServiceImpl;
+import com.pravin.serviceImpl.DesignationServiceImpl;
 import com.pravin.serviceImpl.EmployeeServiceImpl;
+import com.pravin.serviceImpl.IndustrySectorServiceImpl;
+import com.pravin.util.HibernateUtil;
 
-@WebServlet("/EmployeeController")
+@WebServlet("/employee.do")
 public class EmployeeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static EmployeeService employeeService; 
+	private static CityService cityService;
+	private static IndustrySectorService industrySectorService;
+	private static DesignationService designationService;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 	
     public EmployeeController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
+    public void init(){
+    	 employeeService = new EmployeeServiceImpl();
+    	 cityService = CityServiceImpl.getInstance();
+    	 industrySectorService = IndustrySectorServiceImpl.getInstance();
+    	 designationService = DesignationServiceImpl.getInstance();
+    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		handle(request, response);
@@ -37,329 +64,315 @@ public class EmployeeController extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	
 	private void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		EmployeeService employeeService = new EmployeeServiceImpl();
-		
 		PrintWriter out = response.getWriter();
 		
 		String action = request.getParameter("action")+"";
 		
 		switch (action) {
 		case "add": 
-			try {
-				Employee e = getEmployee(request, response);
-				e.setEmployeeId(employeeService.generateEmpId());
-				String msg = employeeService.add(e);
-				out.println("alert('"+msg+"')");
-				
-				response.sendRedirect("");
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				out.println("alert('"+e.getMessage()+"')");
-				response.sendRedirect("");
-			}
+			out.print(add(request));
 			break;
 
-		case "get-states":
-			String c = request.getParameter("country")+"";
-			if(c.equalsIgnoreCase("india")){
-				out.println("1,maharashtra;2,karnatak;3,kerala");
-			}
+		case "update":
+			
 			break;
 			
-		case "get-cities":
-			String state = request.getParameter("state")+"".trim();
-			switch(state){
-			case "1":
-				out.print("1,Akola;2,Pune;3,Washim;4,Mumbai");
-				break;
-			case "2":
-				out.print("1, Banglore;2,Kar2;3,Kar3");
-				break;
-				
-			case "3":
-				out.print("1,kerC1;2,KerC2;3,KerC3");
-				break;
-			}
-				
+		case "delete":
+			
 			break;
+			
+		case "getall":
+			
+			break;
+			
+		case "getbyid":
+			
+			break;
+		
+		case "getmanagers":
+			out.print(getManagers());
+			break;
+			
 		default:
+			
 			break;
 		}
 	}
 	
-	
-	private Employee getEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		
-		Map<String, String[]> params = request.getParameterMap();
-		
-		//here manditory fields logic
-		
-		Employee employee = new Employee();
-		{
-			
-			String firstName = params.get("firstName")[0];
-			String middleName = params.get("middleName")[0];
-			String lastName = params.get("lastName")[0];
-			employee.setEmployeeName(firstName+" "+middleName+" "+lastName);
-			
-			String birthDate = params.get("birthDate")[0];
-			employee.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").parse(birthDate));
-			
-			String gender  = params.get("gender")[0];
-			employee.setGender(gender);
-			
-			String maritalStatus  = params.get("maritalStatus")[0];
-			employee.setMaritalStatus(maritalStatus);
-			
-			String emailId  = params.get("emailId")[0];
-			employee.setEmailId(emailId);
-			
-			String mobExtNo  = params.get("mobExtNo")[0];
-			String mobileNo  = params.get("mobileNo")[0];
-			employee.setMobileNo(mobExtNo+""+mobileNo);
-			
-			String landlineNo  = params.get("landlineNo")[0];
-			employee.setLandlineNo(landlineNo);
-			
-			String emergencyContactPersonName  = params.get("emergencyContactPersonName")[0];
-			employee.setEmergencyContactPersonName(emergencyContactPersonName);
-			
-			String emergencyContactNo = params.get("emergencyContactNo")[0];
-			employee.setEmergencyContactNo(emergencyContactNo);
-			
-			String flatBuildingNo  = params.get("flatBuildingNo")[0];
-			employee.setFlatBuildingNo(flatBuildingNo);
-			
-			String streetLane1 = params.get("streetLane1")[0];
-			employee.setStreetLane1(streetLane1);
-			
-			String streetLane2 = params.get("streetLane2")[0];
-			employee.setStreetLane2(streetLane2);
-			
-			String landmark  = params.get("landmark")[0];
-			employee.setLandmark(landmark);
-			
-			String location  = params.get("location")[0];
-			employee.setLocation(location);
-			
-			String state  = params.get("state")[0];
-			
-			String city   = params.get("city")[0];
-			
-			String pincode = params.get("pincode")[0];
-			employee.setPincode(pincode);
-			
-			String addressProof  = params.get("addressProof")[0];
-			employee.setAddrProofDocType(addressProof);
-			
-			String otherAddressProofVal  = params.get("otherAddressProofVal")[0];
-			employee.setOtherAddrProofType(otherAddressProofVal);
 
-			String proofIdNo = params.get("proofIdNo")[0];
-			employee.setAddrProofDocId(proofIdNo);
-
-			
-			String experienceType = params.get("experienceType")[0];
-			employee.setExperienceType(experienceType);
-			
-			String preTotExp  = params.get("preTotExp")[0];
-			if(preTotExp!=null)
-				if(!preTotExp.trim().isEmpty())
-					employee.setPreviousTotalYearsOfExp(Double.parseDouble(preTotExp));
-			
-			String grandTotWorkExp   = params.get("grandTotWorkExp")[0];
-			String joiningDate  = params.get("joiningDate")[0];
-			employee.setJoiningDate(new SimpleDateFormat("dd-MM-yyyy").parse(joiningDate));
-			
-			String leavingDate   = params.get("leavingDate")[0];
-			employee.setLeavingDate(new SimpleDateFormat("dd-MM-yyyy").parse(leavingDate));
-			
-			String reportingManager = params.get("reportingManager")[0];
-			//Employee manager = //getBy manager ID;
-			//employee.setManager(manager);
-			String ctc  = params.get("ctc")[0];
-			employee.setCtc(Double.parseDouble(ctc));
-			
-			
-			if(experienceType.equals("experienced")){
-					
-				//Experience Details
-				ExperienceDetails experienceDetails1 = new ExperienceDetails();
-				
-				String employerName1   = params.get("employerName1")[0];
-				experienceDetails1.setEmployerName(employerName1);
-				
-				String designation1   = params.get("designation1")[0];
-				experienceDetails1.setDesignation(designation1);
-				
-				String durationFrom1   = params.get("durationFrom1")[0];
-				experienceDetails1.setDurationFrom(new SimpleDateFormat("dd-MM-yyyy").parse(durationFrom1));
-				
-				String durationTill1   = params.get("durationTill1")[0];
-				experienceDetails1.setDurationTill(new SimpleDateFormat("dd-MM-yyyy").parse(durationTill1));
-				
-				String industry1  = params.get("industry1")[0];
-				//IndustrySector industrySector = new IndustrySector();
-				//set industry sector - get by id
-				
-				
-				String totalExperience1  = params.get("totalExperience1")[0];
-				
-				String ctcFixed1  = params.get("ctcFixed1")[0];
-				experienceDetails1.setCtcFixed(Double.parseDouble(ctcFixed1));
-	
-				String ctcVariable1  = params.get("ctcVariable1")[0];
-				experienceDetails1.setCtcVariable(Double.parseDouble(ctcVariable1));
-				
-				String refName101  = params.get("refName101")[0];
-				experienceDetails1.setRefferenceName1(refName101);
-				
-				String refContact101   = params.get("refContact101")[0];
-				experienceDetails1.setRefferenceContNo1(refContact101);
-				
-				String refName102  = params.get("refName102")[0];
-				experienceDetails1.setRefferenceName2(refName102);
-				
-				String refContact102   = params.get("refContact102")[0];
-				experienceDetails1.setRefferenceContNo2(refContact102);
-				
-				experienceDetails1.setEmployee(employee);
-				//save experienceDetails1
-				
-				//Experience Details 2
-				ExperienceDetails experienceDetails2 = new ExperienceDetails();
-				String employerName2   = params.get("employerName2")[0];
-				experienceDetails2.setEmployerName(employerName2);
-				
-				String designation2   = params.get("designation2")[0];
-				experienceDetails2.setDesignation(designation2);
-				
-				String durationFrom2   = params.get("durationFrom2")[0];
-				experienceDetails2.setDurationFrom(new SimpleDateFormat("dd-MM-yyyy").parse(durationFrom2));
-				
-				String durationTill2   = params.get("durationTill2")[0];
-				experienceDetails2.setDurationTill(new SimpleDateFormat("dd-MM-yyyy").parse(durationTill2));
-				
-				String industry2  = params.get("industry2")[0];
-				//get IndustrySetor byId
-				//experienceDetails2.setIndustrySector(industrySector);
-				
-				String totalExperience2   = params.get("totalExperience2")[0];
-				
-				String ctcFixed2  = params.get("ctcFixed2")[0];
-				experienceDetails2.setCtcFixed(Double.parseDouble(ctcFixed2));
-				
-				String ctcVariable2   = params.get("ctcVariable2")[0];
-				experienceDetails2.setCtcVariable(Double.parseDouble(ctcVariable2));
-				
-				String refName201  = params.get("refName201")[0];
-				experienceDetails2.setRefferenceName1(refName201);
-				
-				String refContact201  = params.get("refContact201")[0];
-				experienceDetails2.setRefferenceContNo1(refContact201);
-
-				String refName202  = params.get("refName202")[0];
-				experienceDetails1.setRefferenceName2(refName202);
-				
-				String refContact202   = params.get("refContact202")[0];
-				experienceDetails2.setRefferenceContNo2(refContact202);
-				
-				experienceDetails2.setEmployee(employee);
-				
-				//save experienceDetails2
+	private String getManagers(){
+		try{
+			List<Employee> managers = employeeService.getManagers();
+			if(!managers.isEmpty()){
+				StringBuffer stringBuffer = new StringBuffer();
+				stringBuffer.append("[");
+				int n = 0;
+				for(Employee manager : managers){
+					stringBuffer.append("{\"managerId\":\""+manager.getEmployeeId()+", \"managerName\":\""+manager.getEmployeeName()+"\"}");
+					n++;
+					if(n<managers.size())
+						stringBuffer.append(",");
+				}
+				stringBuffer.append("]");
+				return stringBuffer.toString();
+			}else{
+				return "Error";
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	
+	
+	private String add(HttpServletRequest request){
+		try{
+			Employee employee = getEmployeeDetails(request);
+			setBankDetails(employee, request);
 			
-			//bank details
-			BankDetails bankDetails = new BankDetails();
-			String accountNumber  = params.get("accountNumber")[0];
-			bankDetails.setAcNo(accountNumber);
+			setEducationalQualDetails(employee, request);
+			setExperienceDetails(employee, request);
+			return employeeService.add(employee);
 			
-			String accountHoldersName = params.get("accountHoldersName")[0];
-			bankDetails.setAcHolderName(accountHoldersName);
-			
-			String branchName = params.get("branchName")[0];
-			bankDetails.setBranchName(branchName);
-			
-			String acType  = params.get("acType")[0];
-			bankDetails.setAcType(acType);
+		}catch(Exception e){
+			e.printStackTrace();
+			return "Error";
+		}
+	}
 
-			String ifscCode = params.get("ifscCode")[0];
-			bankDetails.setIfscCode(ifscCode);
+	private Employee getEmployeeDetails(HttpServletRequest request){
+		Employee e = new Employee();
+		
+		String firstName = request.getParameter("first-name");
+		String middleName = request.getParameter("middle-name");
+		String lastName = request.getParameter("last-name");
+		String strBirthDate = request.getParameter("birth-date");
+		String gender = request.getParameter("gender");
+		String maritalStatus = request.getParameter("marital-status");
+		
+		String emailId = request.getParameter("email-id");
+		String mobileExtNo = request.getParameter("mobile-ext-no");
+		String mobileNo = request.getParameter("mobile-no");
+		String landline = request.getParameter("landline-no");
+		String emergencyContPerson = request.getParameter("emergency-contact-person-name");
+		String emergencyContNo = request.getParameter("emergency-contact-no");
+		
+		String flatBuildingNo = request.getParameter("flat-building-no");
+		String street1 = request.getParameter("street-lane1");
+		String street2 = request.getParameter("street-lane2");
+		String landmark = request.getParameter("landmark");
+		String location = request.getParameter("location");
+		String strCityId = request.getParameter("cities");
+		String pincode = request.getParameter("pincode");
+		String addrProof = request.getParameter("address-proof");
+		String otherAddrProof = request.getParameter("other-address-proof-name");
+		String proofIdNo = request.getParameter("proof-id-no");
+		
+		String strJoinDate = request.getParameter("joining-date");
+		String strleaveDate = request.getParameter("leaving-date");
+		String strDesgId = request.getParameter("designations");
+		String strAllocationCityId = request.getParameter("allocation-city");
+		String strIndustrySectorId = request.getParameter("assigned-sector");
+		String strManagerId = request.getParameter("reporting-manager");
+		String strCtc = request.getParameter("ctc");
+		String expType = request.getParameter("experience-type");
+		
+		boolean isNull = firstName==null & middleName==null && lastName==null && strBirthDate==null && gender==null &&
+				maritalStatus==null && emailId==null && mobileExtNo==null && mobileNo==null && 
+				emergencyContPerson==null && emergencyContNo==null && flatBuildingNo==null && street2==null &&
+				landmark==null && location==null && strCityId==null && pincode==null && addrProof==null &&
+				otherAddrProof==null && proofIdNo==null && strJoinDate==null && strDesgId==null
+				&& strAllocationCityId==null && strIndustrySectorId==null && strManagerId==null && strCtc==null;
+		
+		if(!isNull){
+			try{
+				e.setEmployeeId(employeeService.generateEmpId());
+				e.setEmployeeName(firstName+" "+middleName+" "+lastName);
+				e.setBirthDate(DATE_FORMAT.parse(strBirthDate));
+				e.setGender(gender);
+				e.setMaritalStatus(maritalStatus);
+				e.setEmailId(emailId);
+				e.setMobileNo(mobileExtNo+" "+mobileNo);
+				e.setLandlineNo(landline);
+				e.setEmergencyContactPersonName(emergencyContPerson);
+				e.setEmergencyContactNo(emergencyContNo);
+				
+				e.setFlatBuildingNo(flatBuildingNo);
+				e.setStreetLane1(street1);
+				e.setStreetLane2(street2);
+				e.setLandmark(landmark);
+				e.setLocation(location);
+				e.setPincode(pincode);
+				e.setAddrProofDocType(addrProof);
+				e.setOtherAddrProofType(otherAddrProof);
+				e.setAddrProofDocId(proofIdNo);
+				e.setExperienceType(expType);
+				
+				if(!strDesgId.trim().isEmpty()){
+					Designation desg = designationService.getById(Integer.parseInt(strDesgId.trim()));
+					e.setDesignation(desg);
+					
+				}
+				if(!strIndustrySectorId.trim().isEmpty()){
+					IndustrySector industrySector = industrySectorService.getById(Long.parseLong(strIndustrySectorId.trim()));
+					e.setIndustrySector(industrySector);
+				}
+				if(!strCityId.trim().isEmpty()){
+					City city = cityService.getById(Long.parseLong(strCityId.trim()));
+					e.setCity(city);
+				}
+				
+				e.setJoiningDate(DATE_FORMAT.parse(strJoinDate));
+				if(!strleaveDate.trim().isEmpty())
+					e.setLeavingDate(DATE_FORMAT.parse(strleaveDate));
+		
 			
-			bankDetails.setEmployee(employee);
+			}catch(Exception ex){
+				System.out.println("getEmployeeDetails() : "+ex.getMessage());
+			}
+		}
+		
+		return e;
+	}
+	
+	private boolean setBankDetails(Employee employee, HttpServletRequest request){
+		boolean flag = false;
+		String acNo = request.getParameter("account-number");
+		String acHolderName = request.getParameter("account-holders-name");
+		String acType = request.getParameter("account-type");
+		String branch = request.getParameter("branch-name");
+		String ifsc = request.getParameter("ifsc-code");
+		
+		boolean isNull = acNo==null && acHolderName==null && acType==null && branch==null && ifsc==null;
+		if(!isNull){
+			boolean isEmpty = acNo.trim().isEmpty() && acHolderName.trim().isEmpty() 
+							   && acType.trim().isEmpty() && branch.trim().isEmpty() && ifsc.trim().isEmpty();
 			
-			employee.setBankDetails(bankDetails);
-			
-			
-			//EducationalQualificationDetails
-			String course1  = params.get("course1")[0];
-			String schoolUniversity1  = params.get("schoolUniversity1")[0];
-			String passingYear1  = params.get("passingYear1")[0];
-			String percent1  = params.get("percent1")[0];
-			String course2  = params.get("course1")[0];
-			String schoolUniversity2  = params.get("schoolUniversity2")[0];
-			String passingYear2  = params.get("passingYear2")[0];
-			String percent2  = params.get("percent2")[0];
-			String course3  = params.get("course3")[0];
-			String schoolUniversity3  = params.get("schoolUniversity3")[0];
-			String passingYear3  = params.get("passingYear3")[0];
-			String percent3  = params.get("percent3")[0];
-			String course4  = params.get("course4")[0];
-			String schoolUniversity4 = params.get("schoolUniversity4")[0];
-			String passingYear4  = params.get("passingYear4")[0];
-			String percent4  = params.get("percent4")[0];
-			
-			String arr[][] = new String[4][4];
-			arr[0][0] = course1;
-			arr[0][1] = schoolUniversity1;
-			arr[0][2] = passingYear1;
-			arr[0][3] = percent1;
-			
-			arr[1][0] = course2;
-			arr[1][1] = schoolUniversity2;
-			arr[1][2] = passingYear2;
-			arr[1][3] = percent2;
-			
-			arr[2][0] = course3;
-			arr[2][1] = schoolUniversity3;
-			arr[2][2] = passingYear3;
-			arr[2][3] = percent3;
-			
-			arr[3][0] = course4;
-			arr[3][1] = schoolUniversity4;
-			arr[3][2] = passingYear4;
-			arr[3][3] = percent4;
-			
-			EducationalQualDetails qualDetails = new EducationalQualDetails();
-			boolean flag2 = false;
-			for(int i=0;i<4;i++){
-				for(int j=0;j<4;j++){
-					if(!arr[i][j].isEmpty()){
-						flag2 = true;
-						break;
+			if(!isEmpty){
+				BankDetails bankDetails = new BankDetails();
+				bankDetails.setAcHolderName(acHolderName);
+				bankDetails.setAcNo(acNo);
+				bankDetails.setAcType(acType);
+				bankDetails.setBranchName(branch);
+				bankDetails.setIfscCode(ifsc);
+				bankDetails.setEmployee(employee);
+				
+				employee.setBankDetails(bankDetails);
+				flag = true;
+			}
+		}
+		return flag;
+	}
+	
+	
+	private boolean setExperienceDetails(Employee employee, HttpServletRequest request){
+		boolean flag = false;
+		
+		String strAllExpNo = request.getParameter("all-exp-no");
+		if(strAllExpNo!=null)
+		{
+			if(!strAllExpNo.trim().isEmpty()){
+				int n = 0;
+				try{ n = Integer.parseInt(strAllExpNo.trim());	}
+				catch(Exception e){	System.out.println("1) Exception : getExperienceDetails() : "+e.getMessage());	}
+				
+				for(int i=1;i<=n;i++){
+					String employerName = request.getParameter("employer-name"+i);
+					String designation = request.getParameter("designation"+i);
+					String strDurationFrom = request.getParameter("duration-from"+i);
+					String strDurationTill = request.getParameter("duration-till"+i);
+					String strIndustryId  = request.getParameter("industries"+i);
+					String strIndustrySectorId = request.getParameter("sectors"+i);
+					//String totalExperience = request.getParameter("total-experience"+i);
+					String strCtcFixed  = request.getParameter("ctc-fixed"+i); 
+					String strCtcvariable = request.getParameter("ctc-variable"+i); 
+					String refName1  = request.getParameter("ref-name1"+i);
+					String refContact1  = request.getParameter("ref-contact1"+i);
+					String refName2    = request.getParameter("ref-name2"+i);
+					String refContact2    = request.getParameter("ref-contact2"+i);
+					
+					boolean isNotNull = employerName!=null && designation!=null && strDurationFrom!=null && strDurationTill!=null
+								&& strIndustryId!=null && strIndustrySectorId!=null && strCtcFixed!=null && strCtcvariable!=null 
+								&& refName1!=null && refContact1!=null && refName2!=null && refContact2!=null;
+					if(isNotNull){
+						boolean isEmpty = employerName.trim().isEmpty() && designation.trim().isEmpty() && strDurationFrom.trim().isEmpty() 
+								&& strDurationTill.trim().isEmpty()	&& strIndustryId.trim().isEmpty() && strIndustrySectorId.trim().isEmpty() 
+								&& strCtcFixed.trim().isEmpty() && strCtcvariable.trim().isEmpty()
+								&& refName1.trim().isEmpty() && refContact1.trim().isEmpty() && refName2.trim().isEmpty() && refContact2.trim().isEmpty();  
+						
+						if(!isEmpty){
+							try{
+								ExperienceDetails ed = new ExperienceDetails();
+								ed.setEmployerName(employerName);
+								ed.setDesignation(designation);
+								ed.setDurationFrom(DATE_FORMAT.parse(strDurationFrom));
+								ed.setDurationTill(DATE_FORMAT.parse(strDurationFrom));
+								IndustrySector industrySector =	industrySectorService.getById(Long.parseLong(strIndustrySectorId.trim()));
+								IndustrySector temp = new IndustrySector();
+								temp.setSectorId(industrySector.getSectorId());
+								temp.setSectorName(industrySector.getSectorName());
+								ed.setIndustrySector(temp);
+								
+								ed.setCtcFixed(Double.parseDouble(strCtcFixed.trim()));
+								ed.setCtcVariable(Double.parseDouble(strCtcvariable.trim()));
+								ed.setRefferenceName1(refName1);
+								ed.setRefferenceContNo1(refContact1);
+								ed.setRefferenceName2(refName2);
+								ed.setRefferenceContNo2(refContact2);
+								ed.setEmployee(employee);
+								
+								employee.getExperienceDetails().add(ed);
+								//Session session = HibernateUtil.getSessionFactory().openSession();
+								//session.beginTransaction();
+								//session.save(ed);
+								//session.getTransaction().commit();
+								//session.close();
+								flag = true;
+							}catch(Exception e){
+								System.out.println("2) Exception : getExperienceDetails() : "+e.getMessage());
+							}
+						}
 					}
 				}
-				if(flag2){
-					qualDetails.setCourseName(arr[i][0]);
-					qualDetails.setSchoolUniversity(arr[i][1]);
-					//qualDetails.setPassingYear(new SimpleDateFormat("dd/MM/yyyy").parse(arr[i][2]));
-					//qualDetails.setPercentObtained(Double.parseDouble(arr[i][3].trim()));
-					qualDetails.setEmployee(employee);
-					employee.getEducationalQualDetails().add(qualDetails);
-					
-					//save qualDetails 
-				}
 				
 			}
-			
 		}
-		
-		
-		
-		return employee;
-		
+		return flag;
 	}
-
+	
+	
+	private boolean setEducationalQualDetails(Employee employee, HttpServletRequest request){
+		boolean flag = false;
+		for(int i=1; i<=4; i++){
+			String course = request.getParameter("course"+i);
+			String schUni = request.getParameter("school-university"+i);
+			String passYr = request.getParameter("passing-year"+i);
+			String percent = request.getParameter("percent"+i);
+			
+			if(course!=null && schUni!=null && passYr!=null && percent!=null){
+				if(!course.trim().isEmpty() && !schUni.trim().isEmpty() && !passYr.trim().isEmpty() && !percent.trim().isEmpty()){
+					try{
+						EducationalQualDetails eqd = new EducationalQualDetails();
+						eqd.setCourseName(course);
+						eqd.setSchoolUniversity(schUni);
+						eqd.setPassingYear(DATE_FORMAT.parse(passYr));
+						eqd.setPercentObtained(Double.parseDouble(percent.trim()));
+						eqd.setEmployee(employee);
+						
+						employee.getEducationalQualDetails().add(eqd);
+						flag = true;
+					}catch(Exception e){
+						System.out.println("Exception : getEducationalQualDetails() : "+e.getMessage());
+					}
+				}
+			}
+		}
+	
+		return flag;
+	}
+	
+	
 }

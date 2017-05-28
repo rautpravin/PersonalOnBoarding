@@ -57,7 +57,7 @@ public class CityServiceImpl implements CityService{
 	}
 
 	@Override
-	public List<City> getByStateId(long id) {
+	public List<City> getByStateId(int id) {
 		return CITY_DAO.getByStateId(id);
 	}
 	

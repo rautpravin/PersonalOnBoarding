@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="tab_edu_qual_details")
@@ -29,6 +31,7 @@ public class EducationalQualDetails {
 	private String schoolUniversity;
 	
 	@Column(name="passing_year")
+	@Temporal(TemporalType.DATE)
 	private Date passingYear;
 	
 	@Column(name="percent_obtained")

@@ -12,4 +12,6 @@ public interface EmployeeDao {
 	public Employee getById(String id);
 	public List<Employee> getAll();
 	public long getCount();
+	
+	public List<Employee> getManagers();
 }

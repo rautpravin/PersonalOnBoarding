@@ -29,7 +29,7 @@
 		<div class="row">
 			<div class="col-lg-12 master-header-container">
 				<label class="master-table-label">Employee Master</label>
-				<button type="button" id="btnAdd" class="btn btn-primary pull-right">Add</button>
+				<a class="btn btn-primary pull-right" href="/personnel_on_boarding/view/admin/employee_form.jsp">Add</a>
 			</div>
 		</div>
 		
@@ -41,7 +41,6 @@
 	
 				
 	</div> <!-- container -->
-	
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

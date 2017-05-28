@@ -21,8 +21,8 @@ public class ExperienceDetails {
 	
 	@Id
 	@Column(name="exp_id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_experience_deatails")
-	@SequenceGenerator(name="seq_experience_deatails", sequenceName="seq_experience_deatails", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_experience_details")
+	@SequenceGenerator(name="seq_experience_details", sequenceName="seq_experience_details", allocationSize=1)
 	private long expId;
 	
 	

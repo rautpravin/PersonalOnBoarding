@@ -111,7 +111,7 @@ public class CityDaoImpl implements CityDao {
 	}
 
 	@Override
-	public List<City> getByStateId(long id) {
+	public List<City> getByStateId(int id) {
 		List<City> cities = new ArrayList<>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{

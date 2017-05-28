@@ -203,7 +203,7 @@ public class CityController extends HttpServlet {
 		if(strStateId!=null){
 			if(!strStateId.trim().isEmpty()){
 				try{
-					long stateId = Integer.parseInt(strStateId.trim());
+					int stateId = Integer.parseInt(strStateId.trim());
 					List<City> cities = cityService.getByStateId(stateId);
 					if(cities.isEmpty()){
 						return "Error";

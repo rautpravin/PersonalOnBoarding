@@ -21,7 +21,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		Transaction tx = null;
 		try{
 			tx = session.beginTransaction();
-			session.persist(employee);
+			session.save(employee);
 			tx.commit();
 			session.close();
 			return true;
@@ -124,4 +124,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 	
 	
+	@Override 
+	public List<Employee> getManagers(){
+		List<Employee> managers = new ArrayList<>();
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			managers = session.createQuery("from Employee e where e.manager_id = null", Employee.class).getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return managers;
+	}
 }
