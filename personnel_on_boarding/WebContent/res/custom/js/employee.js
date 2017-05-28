@@ -57,6 +57,7 @@ function loadCountries(){
 					selCountries.appendChild(option);
 				}
 			}catch(e){
+				//alert("no countries found! (1) check for countries in country or (2) refresh page! ");
 				document.write("please refresh page !");
 			}	
 		}else{
@@ -122,7 +123,7 @@ function loadCities(state){
 					selCities.appendChild(option);
 				}
 			}catch(e){
-				document.write("please refresh page !");
+				document.write("no cities found! (1) check for cities in city or (2) refresh page! ");
 			}
 		
 		}else{
@@ -156,7 +157,8 @@ function loadAllocationCities(){
 					selAllocationCities.appendChild(option);
 				}
 			}catch(e){
-				document.write("please refresh page !");
+				document.write("no cities found! (1) check for cities in city or (2) refresh page! ");
+				//document.write("please refresh page !");
 			}
 		}
 	}
@@ -188,7 +190,8 @@ function loadDesignations(){
 					
 				}
 			}catch(e){
-				document.write("please refresh page !");
+				document.write("no designations found! (1) check for designations in designation or (2) refresh page! ");
+				//document.write("please refresh page !");
 			}
 		}
 	} 
@@ -231,7 +234,8 @@ function loadIndustries(){
 					selAssIndustries.appendChild(option2);
 				}
 			}catch(e){
-				document.write("please refresh page !");
+				document.write("no industries found! (1) check for industries in industry or (2) refresh page! ");
+				//document.write("please refresh page !");
 			}
 			
 		}
@@ -277,7 +281,8 @@ function loadIndustrySectors(industry){
 					selSec.appendChild(opt);
 				}
 			}catch(e){
-				document.write("please refresh page !");
+				document.write("no industry sectors found! (1) check for industry sectors in industry sector or (2) refresh page! ");
+				//document.write("please refresh page !");
 			}
 			
 		}
