@@ -84,7 +84,7 @@ public class EmployeeController extends HttpServlet {
 			break;
 			
 		case "getall":
-			
+			out.print(getAllEmployees());
 			break;
 			
 		case "getbyid":
@@ -101,16 +101,44 @@ public class EmployeeController extends HttpServlet {
 		}
 	}
 	
+	
+	
+	private String getAllEmployees(){
+		StringBuffer sb = new StringBuffer();
+		
+		List<Employee> employees = employeeService.getAll();
+		if(employees.isEmpty())
+			sb.append("Error");
+		
+		else{
+			int n=0;
+			sb.append("[");
+			for(Employee e: employees){
+				sb.append("{");
+				sb.append("\"employeeId\":\""+e.getEmployeeId()+"\", \"employeeName\":\""+e.getEmployeeName()+"\", \"birthDate\":\""+e.getBirthDate()+"\", \"gender\":\""+e.getGender()+"\", ");
+				sb.append("\"emailId\":\""+e.getEmailId()+"\", \"mobileNo\":\""+e.getMobileNo()+"\", \"landlineNo\":\""+e.getLandlineNo()+"\"");
+				sb.append("}");
+				n++;
+				if(n<employees.size())
+					sb.append(",");
+			}
+			sb.append("]");
+		}
+		
+		return sb.toString();
+	}
+	
+	
 
 	private String getManagers(){
 		try{
-			List<Employee> managers = employeeService.getManagers();
+			List<String[]> managers = employeeService.getManagers();
 			if(!managers.isEmpty()){
 				StringBuffer stringBuffer = new StringBuffer();
 				stringBuffer.append("[");
 				int n = 0;
-				for(Employee manager : managers){
-					stringBuffer.append("{\"managerId\":\""+manager.getEmployeeId()+", \"managerName\":\""+manager.getEmployeeName()+"\"}");
+				for(String[] s : managers){
+					stringBuffer.append("{\"managerId\":\""+s[0]+"\", \"managerName\":\""+s[1]+"\"}");
 					n++;
 					if(n<managers.size())
 						stringBuffer.append(",");
@@ -130,7 +158,7 @@ public class EmployeeController extends HttpServlet {
 	
 	private String add(HttpServletRequest request){
 		try{
-			Employee employee = getEmployeeDetails(request);
+			Employee employee = setEmployeeDetails(request);
 			setBankDetails(employee, request);
 			
 			setEducationalQualDetails(employee, request);
@@ -143,7 +171,7 @@ public class EmployeeController extends HttpServlet {
 		}
 	}
 
-	private Employee getEmployeeDetails(HttpServletRequest request){
+	private Employee setEmployeeDetails(HttpServletRequest request){
 		Employee e = new Employee();
 		
 		String firstName = request.getParameter("first-name");
@@ -211,6 +239,11 @@ public class EmployeeController extends HttpServlet {
 				e.setAddrProofDocId(proofIdNo);
 				e.setExperienceType(expType);
 				
+				if(!strManagerId.trim().isEmpty()){
+					Employee manager = new Employee();
+					manager.setEmployeeId(strManagerId);
+					e.setManager(manager);
+				}
 				if(!strDesgId.trim().isEmpty()){
 					Designation desg = designationService.getById(Integer.parseInt(strDesgId.trim()));
 					e.setDesignation(desg);

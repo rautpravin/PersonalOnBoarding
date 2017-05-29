@@ -1,5 +1,6 @@
 package com.pravin.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pravin.dao.EmployeeDao;
@@ -58,8 +59,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getManagers() {
-		return employeeDao.getManagers();
+	public List<String[]> getManagers() {
+		List<Object[]> temp = employeeDao.getManagers();
+		List<String[]> managers = new ArrayList<>();
+		for(Object[] t: temp){
+			String[] s = new String[2];
+			s[0] = ""+t[0];
+			s[1] = ""+t[1];
+			managers.add(s);
+		}
+		return managers;
 	}
 
 }

@@ -125,11 +125,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	
 	@Override 
-	public List<Employee> getManagers(){
-		List<Employee> managers = new ArrayList<>();
+	public List<Object[]> getManagers(){
+		List<Object[]> managers = new ArrayList<>();
 		try{
 			Session session = HibernateUtil.getSessionFactory().openSession();
-			managers = session.createQuery("from Employee e where e.manager_id = null", Employee.class).getResultList();
+			managers = session.createQuery("select e.employeeId, e.employeeName from Employee e where e.manager.id=null").list();
+			System.out.println("EmpDaoImp : getManagers() : ");
+			for(Object[] s: managers){
+				System.out.println("id : "+(String)s[0]+"\t name : "+(String)s[1]);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

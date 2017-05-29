@@ -29,7 +29,7 @@ public class IndustrySector {
 	@Column(name="sector_name")
 	String sectorName;
 	
-	@ManyToOne(fetch=FetchType.EAGER, optional=true)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="industry_id")
 	private Industry industry;
 

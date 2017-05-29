@@ -30,6 +30,7 @@ window.onload = function(){
 	loadIndustries();
 	loadAllocationCities();
 	loadDesignations();
+	loadManagers();
 }
 
 
@@ -289,6 +290,32 @@ function loadIndustrySectors(industry){
 	}
 	
 	xmlHttpRequest.open("get","/personnel_on_boarding/industry_sector.do?action=getbyindustry&industry-id="+industry.value, true);
+	xmlHttpRequest.send();
+}
+
+
+function loadManagers(){
+	var xmlHttpRequest = getAjaxRequest();
+	var selMgr = document.getElementById("reporting-manager");
+	selMgr.options.length = 0;
+	xmlHttpRequest.onreadystatechange = function(){
+		
+		if(xmlHttpRequest.readyState==4 && xmlHttpRequest.status==200){
+			var data = xmlHttpRequest.responseText;
+			var jsonData = JSON.parse(data);
+			var empty = document.createElement("option");
+			empty.value = "";
+			empty.text = "";
+			selMgr.appendChild(empty);
+			for(i=0;i<jsonData.length;i++){
+				var opt = document.createElement("option");
+				opt.value = jsonData[i].managerId;
+				opt.text = jsonData[i].managerName;
+				selMgr.appendChild(opt);
+			}
+		}
+	}
+	xmlHttpRequest.open("get", "/personnel_on_boarding/employee.do?action=getmanagers", true);
 	xmlHttpRequest.send();
 }
 

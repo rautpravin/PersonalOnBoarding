@@ -100,7 +100,7 @@ public class IndustrySectorDaoImpl implements IndustrySectorDao {
 		try{
 			return session.get(IndustrySector.class, id);
 		}catch(Exception e){
-			System.out.println("4) Exception industry-sector-dao : "+e.getMessage());
+			System.out.println("5) Exception industry-sector-dao : (id = "+id+")   "+e.getMessage());
 			return null;
 		}finally{
 			session.close();
@@ -116,7 +116,7 @@ public class IndustrySectorDaoImpl implements IndustrySectorDao {
 			session.beginTransaction();
 			industrySectors = session.createQuery("from IndustrySector s where s.industry.industryId = :industryId", IndustrySector.class).setParameter("industryId", id).getResultList();
 		}catch(Exception e){
-			System.out.println("5) Exception industry-sector-dao : "+e.getMessage());
+			System.out.println("6) Exception industry-sector-dao : "+e.getMessage());
 		}finally{
 			session.close();
 		}

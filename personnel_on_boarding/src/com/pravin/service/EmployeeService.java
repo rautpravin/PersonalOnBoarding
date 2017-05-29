@@ -12,6 +12,6 @@ public interface EmployeeService {
 	public Employee getById(String id);
 	public List<Employee> getAll();
 	public String generateEmpId();
-	public List<Employee> getManagers();
+	public List<String[]> getManagers();
 	
 }

@@ -111,7 +111,7 @@ public class Employee {
 	private IndustrySector industrySector;
 	
 	@ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="manager_id", insertable = false, updatable = false)
+    @JoinColumn(name="manager_id")
     private Employee manager;
 
 	
